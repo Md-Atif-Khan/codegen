@@ -1,0 +1,139 @@
+.project-page {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.left-panel {
+  width: 30%;
+  min-width: 300px;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #292a2c;
+}
+
+.right-panel {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.code-editor {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+/* Ensure the Monaco editor takes full height */
+.code-editor > div {
+  height: 100% !important;
+}
+
+/* Adjust other styles as needed */
+
+.language-select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.class-structure {
+  font-family: 'Courier New', monospace;
+}
+
+.class-item, .method-item {
+  margin-bottom: 10px;
+}
+
+.class-header {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.class-header:hover {
+  background-color: #e9ecef;
+}
+
+.class-content {
+  margin-left: 20px;
+}
+
+.add-class, .add-method {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.add-class input, .add-method input {
+  flex-grow: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-class button, .add-method button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-class button:hover, .add-method button:hover {
+  background-color: #0056b3;
+}
+
+.code-editor {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-header {
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.copy-button:hover {
+  background-color: #218838;
+}
+
+.ai-assistant {
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+.ai-assistant button {
+  padding: 8px 15px;
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ai-assistant button:hover {
+  background-color: #138496;
+}

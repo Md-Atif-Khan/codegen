@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: codegen
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: API_KEY
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: VITE_API_URL
+        sync: false

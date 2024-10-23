@@ -14,7 +14,7 @@ export const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
     const { token, user } = await authService.login(username, password);
-    res.cookie('token', token, { httpOnly: true, secure: false });
+    res.cookie('token', token, { httpOnly: true, secure: false, sameSite: 'None' });
     res.json({ message: 'Logged in successfully', user });
   } catch (error) {
     next(error);

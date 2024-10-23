@@ -14,7 +14,8 @@ export const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
     const { token, user } = await authService.login(username, password);
-    res.cookie('token', token, { httpOnly: true, secure: false, sameSite: 'None' });
+    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' ? true : false, sameSite: 'None', domain: 'codegen-sigma.vercel.app' });
+    // res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' ? true : false });
     res.json({ message: 'Logged in successfully', user });
   } catch (error) {
     next(error);

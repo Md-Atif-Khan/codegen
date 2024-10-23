@@ -27,16 +27,27 @@ connectDatabase();
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/ai', aiRoutes)
-app.use((req, res, next) => { // If no route matches, throw a NotFoundError
-  next(new NotFoundError('Route not found')); 
-});
-app.use(errorHandler);
 
+// Head request for any unmatched route
+app.head('*', (req, res) => {
+  res.status(200).end();
+});
+
+// Handle non-API routes by serving frontend static files
 app.use(express.static(path.join(__dirname, "/client/dist")));
 
+// Catch-all route to serve index.html for any unmatched route
 app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
+
+// If no route matches, throw a NotFoundError
+app.use((req, res, next) => { 
+  next(new NotFoundError('Route not found')); 
+});
+
+// Error handler middleware (general errors)
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

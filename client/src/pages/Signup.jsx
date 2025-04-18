@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate , Link} from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { validatePassword } from '../services/validatePassword';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
@@ -28,7 +28,8 @@ const Signup = () => {
         pauseOnHover: true,
         draggable: true,
       });
-      setTimeout(() => navigate('/login', { replace: true }), 1000);
+      // setTimeout(() => navigate('/login', { replace: true }), 1000);
+      navigate('/login', { replace: true });
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'An unexpected error occurred';
       const statusCode = error.response?.data?.statusCode || 500;
@@ -113,7 +114,6 @@ const Signup = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };

@@ -17,8 +17,7 @@ const Navbar = () => {
           <button
             className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out transform hover:-translate-y-1"
             onClick={async () => {
-              const response = await logout();
-              setTimeout(() => {
+              const response = await logout();   
                 toast.success(response.message, {
                   position: "top-right",
                   autoClose: 2000,
@@ -27,9 +26,6 @@ const Navbar = () => {
                   pauseOnHover: true,
                   draggable: true,
                 });
-              }, 10);
-              // Navigate to home page after the toast is shown
-              // setTimeout(() => navigate('/'), 2000);
             }}
           >
             Yes, Logout

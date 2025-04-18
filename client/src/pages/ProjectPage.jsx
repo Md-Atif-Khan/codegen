@@ -189,7 +189,6 @@ const ProjectPage = () => {
 
   const handleSave = async () => {
     try {
-      console.log("projectid ", projectId);
       await api.put(`/projects/${projectId}`, {
         classStructure,
         code: generateCode(),

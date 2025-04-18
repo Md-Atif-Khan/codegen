@@ -11,7 +11,6 @@ export const getProjects = async (req, res, next) => {
 
 export const createProject = async (req, res, next) => {
   try {
-    console.log("name");
     const { name, description, classStructure, code } = req.body;
     const project = await projectService.createProject(req.userId, { name, description, classStructure, code });
     res.status(201).json(project);
@@ -22,7 +21,6 @@ export const createProject = async (req, res, next) => {
 
 export const updateProject = async (req, res, next) => {
   try {
-    console.log("updating kr rha hu");
     const { id } = req.params;
     const { name, description, classStructure, code } = req.body;
 

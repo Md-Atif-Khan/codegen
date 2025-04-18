@@ -44,7 +44,7 @@ In the server directory, you can run:
   - Check `vite.config.js`, `tailwind.config.js`, `postcss.config.js`, and `eslint.config.js` for configuration details.
   - Create a `.env` file in the client directory with the following variables:
     ```
-    VITE_API_URL=http://localhost:<your_desired_PORT_for_server>/api    
+    VITE_API_URL=http://localhost:<localhost_server_PORT>   
     ```
 - Server: 
     - Create a `.env` file in the server directory with the following variables:

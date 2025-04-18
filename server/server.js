@@ -16,13 +16,16 @@ const app = express();
 
 // Middleware
 app.use(logger);
-app.use(cors({ origin: process.env.CLIENT_URL,  credentials: true }));
+app.use(cors({ 
+  origin: process.env.CLIENT_URL,  
+  credentials: true 
+}));
 app.use(express.json());
 app.use(cookieParser());
 
 // Connect to MongoDB
 connectDatabase();
-
+ 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
@@ -34,11 +37,11 @@ app.head('*', (req, res) => {
 });
 
 // Handle non-API routes by serving frontend static files
-app.use(express.static(path.join(__dirname, "/client/dist")));
+app.use(express.static(path.join(__dirname, "../client/dist")));
 
 // Catch-all route to serve index.html for any unmatched route
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
 // If no route matches, throw a NotFoundError

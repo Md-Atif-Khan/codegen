@@ -13,16 +13,14 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await login(username, password);
-      setTimeout(() => {
-        toast.success(response.message, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      }, 10);
+      toast.success("hello", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       navigate('/dashboard', { replace: true });
     } catch (error) { 
       const errorMessage = error.response?.data?.message || 'An unexpected error occurred';

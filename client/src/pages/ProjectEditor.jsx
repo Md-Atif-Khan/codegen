@@ -46,7 +46,7 @@ const ProjectEditor = () => {
     e.preventDefault();
     try {
       await api.put(`/projects/${id}`, project);
-      setTimeout(() => {
+      navigate('/dashboard');
         toast.success('Project details updated successfully', {
           position: "top-right",
           autoClose: 2000,
@@ -55,8 +55,6 @@ const ProjectEditor = () => {
           pauseOnHover: true,
           draggable: true,
         });
-      }, 100);
-      navigate('/dashboard');
     } catch (error) {
       toast.error('Failed to update project details');
     }

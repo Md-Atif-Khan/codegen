@@ -2,10 +2,9 @@ import Project from '../models/Project.js';
 import { NotFoundError, UnauthorizedError } from '../utils/errors.js';
 
 export const getProjects = async (userId) => {
+  console.log("services" + userId);
   return await Project.find({ user: userId });
 };
-
-
 
 export const createProject = async (userId, projectData) => {
   const project = new Project({
@@ -15,7 +14,6 @@ export const createProject = async (userId, projectData) => {
     code: projectData.code,
     user: userId,
   });
-  console.log(project);
   return await project.save();
 };
 

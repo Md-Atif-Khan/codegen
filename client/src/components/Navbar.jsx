@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { showSuccessToast } from '../utils/toaster';
 
 const Navbar = () => {
   const { user, logout } = useAuthContext();
@@ -18,14 +18,7 @@ const Navbar = () => {
             className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out transform hover:-translate-y-1"
             onClick={async () => {
               const response = await logout();   
-                toast.success(response.message, {
-                  position: "top-right",
-                  autoClose: 2000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                });
+                showSuccessToast(response.message);
             }}
           >
             Yes, Logout
@@ -53,14 +46,14 @@ const Navbar = () => {
   // const handleLogout = async () => {
   //   try {
   //     const response = await logout();
-  //     toast.success(response.message || 'Logged out successfully', {
+  //     showSuccessToast(response.message || 'Logged out successfully', {
   //       position: "top-right",
   //       autoClose: 2000,
   //     });
   //     // Navigate to home page after the toast is shown
   //     setTimeout(() => navigate('/'), 2000);
   //   } catch (error) {
-  //     toast.error('Logout failed. Please try again.');
+  //     showErrorToast('Logout failed. Please try again.');
   //   }
   // };
 

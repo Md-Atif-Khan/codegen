@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { showSuccessToast } from '../utils/toaster';
+
 
 const CreateProject = () => {
   const [name, setName] = useState('');
@@ -15,12 +15,12 @@ const CreateProject = () => {
       var classStructure;
       var code;
       const response = await api.post('/projects', { name, description, classStructure, code });
-      toast.success('Project created successfully');
+      showSuccessToast('Project created successfully');
       navigate(`/project/${response.data._id}`, {state: { projectId: response.data._id }}); //Redirecting ProjectPage.jsx
 
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'An unexpected error occurred';
-      toast.error(`Error creating project: ${errorMessage}`);
+      showErrorToast(`Error creating project: ${errorMessage}`);
     }
   };
 

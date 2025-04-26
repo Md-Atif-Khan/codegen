@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate , Link} from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { validatePassword } from '../services/validatePassword';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { showSuccessToast } from '../utils/toaster';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -15,36 +14,28 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (passwordError) {
-      toast.error(passwordError);
+      showErrorToast(passwordError);
       return;
     }
     try {
       const response = await signup(username, password);
-      toast.success('Signup successful!', {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      // setTimeout(() => navigate('/login', { replace: true }), 1000);
+      showSuccessToast('Signup successful!');
       navigate('/login', { replace: true });
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'An unexpected error occurred';
       const statusCode = error.response?.data?.statusCode || 500;
       switch (statusCode) {
         case 400:
-          toast.error(`Bad Request: ${errorMessage}`);
+          showErrorToast(`Bad Request: ${errorMessage}`);
           break;
         case 401:
-          toast.error(`Unauthorized: ${errorMessage}`);
+          showErrorToast(`Unauthorized: ${errorMessage}`);
           break;
         case 404:
-          toast.error(`Not Found: ${errorMessage}`);
+          showErrorToast(`Not Found: ${errorMessage}`);
           break;
         default:
-          toast.error(`Error: ${errorMessage}`);
+          showErrorToast(`Error: ${errorMessage}`);
       }
     }
   };

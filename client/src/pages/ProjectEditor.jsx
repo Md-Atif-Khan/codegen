@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { toast } from 'react-toastify';
+import { showSuccessToast } from '../utils/toaster';
 
 const ProjectEditor = () => {
   const [project, setProject] = useState({ name: '', description: '', content: '' });
@@ -24,16 +24,16 @@ const ProjectEditor = () => {
       const statusCode = error.response?.data?.statusCode || 500;
       switch (statusCode) {
         case 400:
-          toast.error(`Bad Request: ${errorMessage}`);
+          showErrorToast(`Bad Request: ${errorMessage}`);
           break;
         case 401:
-          toast.error(`Unauthorized: ${errorMessage}`);
+          showErrorToast(`Unauthorized: ${errorMessage}`);
           break;
         case 404:
-          toast.error(`Not Found: ${errorMessage}`);
+          showErrorToast(`Not Found: ${errorMessage}`);
           break;
         default:
-          toast.error(`Error: ${errorMessage}`);
+          showErrorToast(`Error: ${errorMessage}`);
       }
     }
   };
@@ -47,16 +47,9 @@ const ProjectEditor = () => {
     try {
       await api.put(`/projects/${id}`, project);
       navigate('/dashboard');
-        toast.success('Project details updated successfully', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+        showSuccessToast('Project details updated successfully');
     } catch (error) {
-      toast.error('Failed to update project details');
+      showErrorToast('Failed to update project details');
     }
   };
 

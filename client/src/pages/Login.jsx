@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { showSuccessToast } from '../utils/toaster';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -13,30 +13,23 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await login(username, password);
-      toast.success("hello", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      showSuccessToast("Login successful!");
       navigate('/dashboard', { replace: true });
     } catch (error) { 
       const errorMessage = error.response?.data?.message || 'An unexpected error occurred';
       const statusCode = error.response?.data?.statusCode || 500;
       switch (statusCode) {
         case 400:
-          toast.error(`Bad Request: ${errorMessage}`);
+          showErrorToast(`Bad Request: ${errorMessage}`);
           break;
         case 401:
-          toast.error(`Unauthorized: ${errorMessage}`);
+          showErrorToast(`Unauthorized: ${errorMessage}`);
           break;
         case 404:
-          toast.error(`Not Found: ${errorMessage}`);
+          showErrorToast(`Not Found: ${errorMessage}`);
           break;
         default:
-          toast.error(`Error: ${errorMessage}`);
+          showErrorToast(`Error: ${errorMessage}`);
       }
     }
   };

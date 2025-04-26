@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import CodeEditor from '../components/CodeEditor';
 import ClassStructure from '../components/ClassStructure';
 import api from '../services/api';
+import {showSuccessToast} from '../utils/toaster';
 
 const ProjectPage = () => {
   const [leftPanelWidth, setLeftPanelWidth] = useState(300);
@@ -194,7 +195,7 @@ const ProjectPage = () => {
         code: generateCode(),
       });
       localStorage.clear();
-      alert('Project saved successfully!');
+      showSuccessToast('Project saved successfully!');
     } catch (error) {
       console.error('Error saving project:', error);
       alert('Failed to save project. Please try again.');

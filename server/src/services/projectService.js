@@ -2,7 +2,6 @@ import Project from '../models/Project.js';
 import { NotFoundError, UnauthorizedError } from '../utils/errors.js';
 
 export const getProjects = async (userId) => {
-  console.log("services" + userId);
   return await Project.find({ user: userId });
 };
 

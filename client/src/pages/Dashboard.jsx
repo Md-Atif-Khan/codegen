@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
-import { showSuccessToast } from '../utils/toaster';
+import { toast } from 'react-toastify';
+import { showErrorToast, showSuccessToast } from '../utils/toaster';
+import { customErrorMessage } from '../utils/error';
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
@@ -16,21 +18,7 @@ const Dashboard = () => {
       setProjects(response.data);
     }
     catch (error) {
-      const errorMessage = error.response?.data?.message || 'An unexpected error occurred';
-      const statusCode = error.response?.data?.statusCode || 500;
-      switch (statusCode) {
-        case 400:
-          showErrorToast(`Bad Request: ${errorMessage}`);
-          break;
-        case 401:
-          showErrorToast(`Unauthorized: ${errorMessage}`);
-          break;
-        case 404:
-          showErrorToast(`Not Found: ${errorMessage}`);
-          break;
-        default:
-          showErrorToast(`Error: ${errorMessage}`);
-      }
+      showErrorToast(customErrorMessage(error));
     }
   };
 
@@ -47,22 +35,7 @@ const Dashboard = () => {
                 fetchProjects();
                 showSuccessToast('Project deleted successfully');
               } catch (error) {
-                const errorMessage = error.response?.data?.message || 'An unexpected error occurred';
-                const statusCode = error.response?.data?.statusCode || 500;
-                console.error('Error deleting project:', error);
-                switch (statusCode) {
-                  case 400:
-                    showErrorToast(`Bad Request: ${errorMessage}`);
-                    break;
-                  case 401:
-                    showErrorToast(`Unauthorized: ${errorMessage}`);
-                    break;
-                  case 404:
-                    showErrorToast(`Not Found: ${errorMessage}`);
-                    break;
-                  default:
-                    showErrorToast(`Error: ${errorMessage}`);
-                }
+                showErrorToast(customErrorMessage(error));
               }
             }}
           >
@@ -87,33 +60,6 @@ const Dashboard = () => {
       }
     );
   }
-
-  // const deleteProject = async (id) => {
-  //   if (!window.confirm('Are you sure you want to delete this project?')) return;
-  //   try {
-  //     await api.delete(`/projects/${id}`);
-  //     fetchProjects();
-  //     showSuccessToast('Project deleted successfully');
-  //   } catch (error) {
-  //     const errorMessage = error.response?.data?.message || 'An unexpected error occurred';
-  //     const statusCode = error.response?.data?.statusCode || 500;
-  //     console.error('Error deleting project:', error);
-  //     switch (statusCode) {
-  //       case 400:
-  //         showErrorToast(`Bad Request: ${errorMessage}`);
-  //         break;
-  //       case 401:
-  //         showErrorToast(`Unauthorized: ${errorMessage}`);
-  //         break;
-  //       case 404:
-  //         showErrorToast(`Not Found: ${errorMessage}`);
-  //         break;
-  //       default:
-  //         showErrorToast(`Error: ${errorMessage}`);
-  //     }
-  //   }
-  // };
-
 
   return (
     <div className="pt-20 min-h-screen bg-gray-120 py-12 px-4 sm:px-6 lg:px-8">

@@ -15,22 +15,8 @@ const Login = () => {
       const response = await login(username, password);
       showSuccessToast("Login successful!");
       navigate('/dashboard', { replace: true });
-    } catch (error) { 
-      const errorMessage = error.response?.data?.message || 'An unexpected error occurred';
-      const statusCode = error.response?.data?.statusCode || 500;
-      switch (statusCode) {
-        case 400:
-          showErrorToast(`Bad Request: ${errorMessage}`);
-          break;
-        case 401:
-          showErrorToast(`Unauthorized: ${errorMessage}`);
-          break;
-        case 404:
-          showErrorToast(`Not Found: ${errorMessage}`);
-          break;
-        default:
-          showErrorToast(`Error: ${errorMessage}`);
-      }
+    } catch (error) {
+      showErrorToast(customErrorMessage(error));
     }
   };
 

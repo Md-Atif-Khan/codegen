@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { showSuccessToast } from '../utils/toaster';
 
 const Navbar = () => {
@@ -42,20 +43,6 @@ const Navbar = () => {
       }
     );
   };
-
-  // const handleLogout = async () => {
-  //   try {
-  //     const response = await logout();
-  //     showSuccessToast(response.message || 'Logged out successfully', {
-  //       position: "top-right",
-  //       autoClose: 2000,
-  //     });
-  //     // Navigate to home page after the toast is shown
-  //     setTimeout(() => navigate('/'), 2000);
-  //   } catch (error) {
-  //     showErrorToast('Logout failed. Please try again.');
-  //   }
-  // };
 
   const isHomePage = location.pathname === '/';
   const navbarClass = isHomePage

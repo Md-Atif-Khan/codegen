@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate , Link} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { validatePassword } from '../services/validatePassword';
 import { showSuccessToast } from '../utils/toaster';
@@ -22,21 +22,7 @@ const Signup = () => {
       showSuccessToast('Signup successful!');
       navigate('/login', { replace: true });
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'An unexpected error occurred';
-      const statusCode = error.response?.data?.statusCode || 500;
-      switch (statusCode) {
-        case 400:
-          showErrorToast(`Bad Request: ${errorMessage}`);
-          break;
-        case 401:
-          showErrorToast(`Unauthorized: ${errorMessage}`);
-          break;
-        case 404:
-          showErrorToast(`Not Found: ${errorMessage}`);
-          break;
-        default:
-          showErrorToast(`Error: ${errorMessage}`);
-      }
+      showErrorToast(customErrorMessage(error));
     }
   };
 

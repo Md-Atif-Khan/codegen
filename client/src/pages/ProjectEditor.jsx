@@ -20,21 +20,7 @@ const ProjectEditor = () => {
       const { name, description, content } = response.data; // Destructure the data
       setProject({ name, description, content });
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'An unexpected error occurred';
-      const statusCode = error.response?.data?.statusCode || 500;
-      switch (statusCode) {
-        case 400:
-          showErrorToast(`Bad Request: ${errorMessage}`);
-          break;
-        case 401:
-          showErrorToast(`Unauthorized: ${errorMessage}`);
-          break;
-        case 404:
-          showErrorToast(`Not Found: ${errorMessage}`);
-          break;
-        default:
-          showErrorToast(`Error: ${errorMessage}`);
-      }
+      showErrorToast(customErrorMessage(error));
     }
   };
 
@@ -47,7 +33,7 @@ const ProjectEditor = () => {
     try {
       await api.put(`/projects/${id}`, project);
       navigate('/dashboard');
-        showSuccessToast('Project details updated successfully');
+      showSuccessToast('Project details updated successfully');
     } catch (error) {
       showErrorToast('Failed to update project details');
     }

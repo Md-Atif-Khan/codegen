@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../services/api';
+import api from '../../services/api';
 import { toast } from 'react-toastify';
-import { showErrorToast, showSuccessToast } from '../utils/toaster';
-import { customErrorMessage } from '../utils/error';
+import { showErrorToast, showSuccessToast } from '../../utils/toaster';
+import { customErrorMessage } from '../../utils/error';
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);

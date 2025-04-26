@@ -1,7 +1,7 @@
 import React from 'react';
 import Editor from "@monaco-editor/react";
 import { FaCopy } from 'react-icons/fa';
-import { showSuccessToast } from '../utils/toaster';
+import { showSuccessToast } from '../../utils/toaster';
 
 const CodeEditor = ({ code, onChange, language }) => {
   const handleCopy = () => {

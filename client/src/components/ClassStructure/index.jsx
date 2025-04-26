@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../services/api';
+import api from '../../services/api';
 import { FaFolder, FaFolderOpen, FaFile, FaPlus, FaMinus, FaTrash } from 'react-icons/fa';
 
 const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass }) => {

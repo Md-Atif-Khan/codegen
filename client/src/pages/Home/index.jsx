@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuthContext } from '../context/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 import { FaCode, FaPython, FaJava, FaCuttlefish, FaGithub, FaRocket } from 'react-icons/fa';
 import { SiJavascript } from 'react-icons/si';
 import { useSpring, animated, config } from 'react-spring';

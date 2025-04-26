@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuthContext } from '../context/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { showSuccessToast } from '../utils/toaster';
+import { showSuccessToast } from '../../utils/toaster';
 
 const Navbar = () => {
   const { user, logout } = useAuthContext();

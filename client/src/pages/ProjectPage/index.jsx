@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import CodeEditor from '../components/CodeEditor';
-import ClassStructure from '../components/ClassStructure';
-import api from '../services/api';
-import {showSuccessToast} from '../utils/toaster';
+import { useParams } from 'react-router-dom';
+import CodeEditor from '../../components/CodeEditor';
+import ClassStructure from '../../components/ClassStructure';
+import api from '../../services/api';
+import {showSuccessToast} from '../../utils/toaster';
 
 const ProjectPage = () => {
   const [leftPanelWidth, setLeftPanelWidth] = useState(300);

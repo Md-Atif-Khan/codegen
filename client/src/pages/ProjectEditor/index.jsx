@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../services/api';
-import { showSuccessToast } from '../utils/toaster';
+import api from '../../services/api';
+import { showSuccessToast } from '../../utils/toaster';
 
 const ProjectEditor = () => {
   const [project, setProject] = useState({ name: '', description: '', content: '' });

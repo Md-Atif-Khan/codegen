@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api from '../../services/api';
 import { FaFolder, FaFolderOpen, FaFile, FaPlus, FaMinus, FaTrash } from 'react-icons/fa';
+import './style.css';
 
 const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass }) => {
   const [expandedClasses, setExpandedClasses] = useState({});
@@ -172,71 +173,74 @@ const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass })
         <h4>{access}</h4>
         {access === 'public' && classItem.parents && classItem.parents.some(p => p.inheritanceType === 'public') &&
           inheritedMembers.public.map(member => (
-            <div key={`inherited-${member.name}`} className="member-item text-gray-400 italic">
-              <FaFile className="inline-block mr-2" /> {member.type || member.returnType} {member.name} (inherited)
+            <div key={`inherited-${member.name}`} className="member-item inherited-member">
+              <FaFile /> {member.type || member.returnType} {member.name} (inherited)
             </div>
           ))
         }
         {access === 'protected' && classItem.parents &&
           (classItem.parents.some(p => p.inheritanceType === 'public') || classItem.parents.some(p => p.inheritanceType === 'protected')) &&
           inheritedMembers.protected.map(member => (
-            <div key={`inherited-${member.name}`} className="member-item text-gray-400 italic">
-              <FaFile className="inline-block mr-2" /> {member.type || member.returnType} {member.name} (inherited)
+            <div key={`inherited-${member.name}`} className="member-item inherited-member">
+              <FaFile /> {member.type || member.returnType} {member.name} (inherited)
             </div>
           ))
         }
         {access === 'private' && classItem.parents && classItem.parents.some(p => p.inheritanceType === 'private') &&
           inheritedMembers.private.map(member => (
-            <div key={`inherited-${member.name}`} className="member-item text-gray-400 italic">
-              <FaFile className="inline-block mr-2" /> {member.type || member.returnType} {member.name} (inherited)
+            <div key={`inherited-${member.name}`} className="member-item inherited-member">
+              <FaFile /> {member.type || member.returnType} {member.name} (inherited)
             </div>
           ))
         }
         {classItem[access]?.attributes?.filter(attr => !inheritedMemberNames.has(attr.name)).map(attr => (
-          <div key={attr.name} className="attribute-item text-gray-400">
-            <FaFile className="inline-block mr-2" /> {attr.type} {attr.name}
-            <button onClick={() => handleDeleteMember(classItem.name, access, 'attribute', attr.name)} className="ml-2 text-red-500"><FaMinus /></button>
+          <div key={attr.name} className="attribute-item">
+            <FaFile /> {attr.type} {attr.name}
+            <button onClick={() => handleDeleteMember(classItem.name, access, 'attribute', attr.name)} 
+                    className="delete-button">
+              <FaMinus />
+            </button>
           </div>
         ))}
         {classItem[access]?.methods?.filter(method => !inheritedMemberNames.has(method.name)).map(method => (
-          <div key={`${method.name}(${method.params.join(',')})`} className="method-item text-gray-400">
-            <FaFile className="inline-block mr-2" /> {method.returnType} {method.name}({method.params.join(', ')})
-            <button onClick={() => handleDeleteMember(classItem.name, access, 'method', method.name, method.params)} className="ml-2 text-red-500"><FaMinus /></button>
-          </div>
-        ))}
-        {classItem[access]?.methods?.filter(method => inheritedMemberNames.has(method.name)).map(method => (
-          <div key={`${method.name}(${method.params.join(',')})`} className="method-item text-gray-400">
-            <FaFile className="inline-block mr-2" /> {method.returnType} {method.name}({method.params.join(', ')})(overriden)
-            <button onClick={() => handleDeleteMember(classItem.name, access, 'method', method.name, method.params)} className="ml-2 text-red-500"><FaMinus /></button>
+          <div key={`${method.name}(${method.params.join(',')})`} className="method-item">
+            <FaFile /> {method.returnType} {method.name}({method.params.join(', ')})
+            <button onClick={() => handleDeleteMember(classItem.name, access, 'method', method.name, method.params)} 
+                    className="delete-button">
+              <FaMinus />
+            </button>
           </div>
         ))}
       </div>
     );
   };
-  
 
   const renderClass = (classItem) => {
     const isExpanded = expandedClasses[classItem.name];
     const classInput = classInputs[classItem.name] || {};
+    
     return (
-      <div key={classItem.name} className="class-item group transition-transform transform hover:scale-105 hover:bg-gray-700 p-2 rounded-md">
-        <div className="flex justify-between items-center">
-          <div onClick={() => toggleClass(classItem.name)} className="class-header cursor-pointer flex items-center space-x-2 text-lg text-gray-300 group-hover:text-white">
-            {isExpanded ? <FaFolderOpen /> : <FaFolder />} <span>{classItem.name}</span>
+      <div key={classItem.name} className="class-item">
+        <div className="class-header">
+          <div onClick={() => toggleClass(classItem.name)}>
+            {isExpanded ? <FaFolderOpen /> : <FaFolder />} 
+            <span>{classItem.name}</span>
             {classItem.parents && classItem.parents.length > 0 && (
-              <span className="text-sm text-gray-400">
+              <span className="parent-info">
                 : {classItem.parents.map((parent) => `${parent.inheritanceType} ${parent.name}`).join(', ')}
               </span>
             )}
           </div>
-          <button onClick={() => onDeleteClass(classItem.name)} className="text-red-500 hover:text-red-700">
+          <button onClick={() => onDeleteClass(classItem.name)} className="delete-button">
             <FaTrash /> Delete
           </button>
         </div>
+        
         {isExpanded && (
-          <div className="class-content ml-5 mt-2">
+          <div className="class-content">
             {['private', 'protected', 'public'].map(access => renderMembers(classItem, access))}
-            <div className="add-attribute flex items-center mt-2">
+            
+            <div className="form-group">
               <input
                 type="text"
                 value={classInput.attributeName || ''}
@@ -248,7 +252,7 @@ const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass })
                   }
                 }))}
                 placeholder="Attribute Name"
-                className="text-black p-1 rounded mr-2"
+                className="form-input"
               />
               <select
                 value={classInput.attributeType || 'int'}
@@ -259,45 +263,19 @@ const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass })
                     attributeType: e.target.value
                   }
                 }))}
-                className="text-black p-1 rounded mr-2"
+                className="form-select"
               >
                 {dataTypes.filter(type => type !== 'void').map(type => (
                   <option key={type} value={type}>{type}</option>
                 ))}
               </select>
-              <select
-                value={classInput.attributeAccess || 'public'}
-                onChange={(e) => setClassInputs(prev => ({
-                  ...prev,
-                  [classItem.name]: {
-                    ...prev[classItem.name],
-                    attributeAccess: e.target.value
-                  }
-                }))}
-                className="text-black p-1 rounded mr-2"
-              >
-                <option value="private">Private</option>
-                <option value="protected">Protected</option>
-                <option value="public">Public</option>
-              </select>
-              <input
-                type="text"
-                value={classInput.attributeDefaultValue || ''}
-                onChange={(e) => setClassInputs(prev => ({
-                  ...prev,
-                  [classItem.name]: {
-                    ...prev[classItem.name],
-                    attributeDefaultValue: e.target.value
-                  }
-                }))}
-                placeholder="Default Value"
-                className="text-black p-1 rounded mr-2"
-              />
-              <button onClick={() => handleAddAttribute(classItem.name)} className="bg-blue-500 text-white p-1 rounded">
+              <button onClick={() => handleAddAttribute(classItem.name)} 
+                      className="button button-blue">
                 <FaPlus /> Add Attribute
               </button>
             </div>
-            <div className="add-method flex items-center mt-2">
+
+            <div className="form-group">
               <input
                 type="text"
                 value={classInput.methodName || ''}
@@ -309,7 +287,7 @@ const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass })
                   }
                 }))}
                 placeholder="Method Name"
-                className="text-black p-1 rounded mr-2"
+                className="form-input"
               />
               <select
                 value={classInput.methodReturnType || 'void'}
@@ -320,49 +298,20 @@ const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass })
                     methodReturnType: e.target.value
                   }
                 }))}
-                className="text-black p-1 rounded mr-2"
+                className="form-select"
               >
                 {dataTypes.map(type => (
                   <option key={type} value={type}>{type}</option>
                 ))}
               </select>
-              <select
-                value={classInput.methodAccess || 'public'}
-                onChange={(e) => setClassInputs(prev => ({
-                  ...prev,
-                  [classItem.name]: {
-                    ...prev[classItem.name],
-                    methodAccess: e.target.value
-                  }
-                }))}
-                className="text-black p-1 rounded mr-2"
-              >
-                <option value="private">Private</option>
-                <option value="protected">Protected</option>
-                <option value="public">Public</option>
-              </select>
-              <input
-                type="text"
-                value={classInput.methodParams || ''}
-                onChange={(e) => setClassInputs(prev => ({
-                  ...prev,
-                  [classItem.name]: {
-                    ...prev[classItem.name],
-                    methodParams: e.target.value
-                  }
-                }))}
-                placeholder="Parameters (comma-separated)"
-                className="text-black p-1 rounded mr-2"
-              />
-              <button onClick={() => setShowDefinition(prev => ({ ...prev, [classItem.name]: !prev[classItem.name] }))} className="bg-purple-500 text-white p-1 rounded mr-2">
-                {showDefinition[classItem.name] ? 'Hide Definition' : 'Add Definition'}
-              </button>
-              <button onClick={() => handleAddMethod(classItem.name)} className="bg-green-500 text-white p-1 rounded">
+              <button onClick={() => handleAddMethod(classItem.name)} 
+                      className="button button-green">
                 <FaPlus /> Add Method
               </button>
             </div>
+
             {showDefinition[classItem.name] && (
-              <div className="mt-2">
+              <div className="method-definition">
                 <textarea
                   value={classInput.methodDefinition || ''}
                   onChange={(e) => setClassInputs(prev => ({
@@ -372,12 +321,12 @@ const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass })
                       methodDefinition: e.target.value
                     }
                   }))}
-                  placeholder="Write your function definition or get AI suggestions on your description"
-                  className="w-full h-32 p-2 text-black rounded"
+                  placeholder="Write your function definition or get AI suggestions"
+                  className="method-textarea"
                 />
                 <button 
                   onClick={() => handleGetAISuggestions(classItem.name)} 
-                  className="mt-2 bg-indigo-500 text-white p-1 rounded"
+                  className="button button-purple"
                 >
                   Get AI Suggestions
                 </button>
@@ -394,25 +343,25 @@ const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass })
       <div className="class-list">
         {structure.map((classItem) => renderClass(classItem))}
       </div>
-      <div className="add-class mt-4">
-        <h3 className="text-white text-lg">Add New Class</h3>
-        <div className="flex items-center mt-2">
+      <div className="add-class-section">
+        <h3 className="add-class-title">Add New Class</h3>
+        <div className="form-group">
           <input
             type="text"
             value={newClassName}
             onChange={(e) => setNewClassName(e.target.value)}
             placeholder="Class Name"
-            className="text-black p-1 rounded mr-2"
+            className="form-input"
           />
-          <button onClick={handleAddParent} className="bg-green-500 text-white p-1 rounded mr-2">
+          <button onClick={handleAddParent} className="button button-green">
             Add Parent
           </button>
-          <button onClick={handleAddClass} className="bg-blue-500 text-white p-1 rounded">
+          <button onClick={handleAddClass} className="button button-blue">
             <FaPlus /> Add Class
           </button>
         </div>
         {newClassParents.map((parent, index) => (
-          <div key={index} className="parent-class mt-2 flex items-center">
+          <div key={index} className="parent-class-item">
             <input
               type="text"
               value={parent.name}
@@ -422,7 +371,7 @@ const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass })
                 )
               }
               placeholder="Parent Class Name"
-              className="text-black p-1 rounded mr-2"
+              className="form-input"
             />
             <select
               value={parent.inheritanceType}
@@ -431,7 +380,7 @@ const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass })
                   prev.map((p, i) => (i === index ? { ...p, inheritanceType: e.target.value } : p))
                 )
               }
-              className="text-black p-1 rounded mr-2"
+              className="form-select"
             >
               <option value="public">Public</option>
               <option value="protected">Protected</option>
@@ -439,7 +388,7 @@ const ClassStructure = ({ structure, onAddClass, onUpdateClass, onDeleteClass })
             </select>
             <button
               onClick={() => setNewClassParents((prev) => prev.filter((_, i) => i !== index))}
-              className="text-red-500 hover:text-red-700"
+              className="button button-red"
             >
               <FaTrash /> Delete Parent
             </button>

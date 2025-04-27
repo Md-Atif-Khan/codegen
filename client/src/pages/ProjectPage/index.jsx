@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import CodeEditor from '../../components/CodeEditor';
 import ClassStructure from '../../components/ClassStructure';
+// import CodeStructureViewer from '../../components/CodeStructureViewer';
 import api from '../../services/api';
-import {showSuccessToast} from '../../utils/toaster';
+import { showSuccessToast } from '../../utils/toaster';
+import { FaCopy } from 'react-icons/fa';
+import './style.css';
 
 const ProjectPage = () => {
+  const editorRef = useRef(null);
   const [leftPanelWidth, setLeftPanelWidth] = useState(300);
   const { id } = useParams();
   const projectId = location.state?.projectId || id;
@@ -13,7 +17,7 @@ const ProjectPage = () => {
     const savedStructure = localStorage.getItem('classStructure');
     return savedStructure ? JSON.parse(savedStructure) : [];
   });
-  
+
   const [language, setLanguage] = useState(() => {
     const savedLanguage = localStorage.getItem('language');
     return savedLanguage || 'cpp';
@@ -31,14 +35,14 @@ const ProjectPage = () => {
         setpDesc(fetchedDesc);
         setClassStructure(fetchedStructure || []);
         localStorage.setItem('classStructure', JSON.stringify(fetchedStructure || []));
-        
+
         setLanguage(fetchedCode ? 'cpp' : 'cpp');
         localStorage.setItem('language', fetchedCode ? 'cpp' : 'cpp');
       } catch (error) {
         console.error('Error fetching project:', error);
       }
     };
-  
+
     fetchProject();
   }, [projectId]);
 
@@ -52,11 +56,11 @@ const ProjectPage = () => {
     ['public', 'protected'].forEach(access => {
       parentClass[access].attributes.forEach(attr => {
         const newAccess = inheritanceType === 'public' ? access : inheritanceType;
-        inheritedMembers[newAccess].attributes.push({...attr, inherited: true});
+        inheritedMembers[newAccess].attributes.push({ ...attr, inherited: true });
       });
       parentClass[access].methods.forEach(method => {
         const newAccess = inheritanceType === 'public' ? access : inheritanceType;
-        inheritedMembers[newAccess].methods.push({...method, inherited: true});
+        inheritedMembers[newAccess].methods.push({ ...method, inherited: true });
       });
     });
 
@@ -95,19 +99,19 @@ const ProjectPage = () => {
   };
 
   const handleUpdateClass = (updatedClass) => {
-    setClassStructure(classStructure.map(cls => 
+    setClassStructure(classStructure.map(cls =>
       cls.name === updatedClass.name ? updatedClass : cls
     ));
   };
 
   const handleDeleteOverride = (className, methodName, access) => {
-    setClassStructure(prevStructure => 
+    setClassStructure(prevStructure =>
       prevStructure.map(cls => {
         if (cls.name === className) {
-          const updatedMethods = cls[access].methods.map(method => 
-            method.name === methodName ? {...method, inherited: true, definition: ''} : method
+          const updatedMethods = cls[access].methods.map(method =>
+            method.name === methodName ? { ...method, inherited: true, definition: '' } : method
           );
-          return {...cls, [access]: {...cls[access], methods: updatedMethods}};
+          return { ...cls, [access]: { ...cls[access], methods: updatedMethods } };
         }
         return cls;
       })
@@ -125,8 +129,8 @@ const ProjectPage = () => {
       });
     };
     findDescendants(className);
-    
-    setClassStructure(prevStructure => 
+
+    setClassStructure(prevStructure =>
       prevStructure.filter(cls => !classesToDelete.includes(cls.name))
     );
   };
@@ -138,7 +142,7 @@ const ProjectPage = () => {
         ? ` : ${classItem.parents.map(parent => `${parent.inheritanceType} ${parent.name}`).join(', ')}`
         : '';
       classCode.push(`class ${classItem.name}${inheritanceString} {`);
-    
+
       ['public', 'protected', 'private'].forEach(access => {
         if (classItem[access].attributes.length > 0 || classItem[access].methods.length > 0) {
           classCode.push(`${access}:`);
@@ -161,7 +165,7 @@ const ProjectPage = () => {
           });
         }
       });
-    
+
       classCode.push('};');
       return classCode.join('\n');
     }).join('\n\n');
@@ -171,16 +175,16 @@ const ProjectPage = () => {
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };
-  
+
   const handleMouseMove = (e) => {
     setLeftPanelWidth(e.clientX);
   };
-  
+
   const handleMouseUp = () => {
     document.removeEventListener('mousemove', handleMouseMove);
     document.removeEventListener('mouseup', handleMouseUp);
   };
-  
+
   useEffect(() => {
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
@@ -202,18 +206,36 @@ const ProjectPage = () => {
     }
   };
 
+  const handleCopy = () => {
+    if (editorRef.current) {
+      const code = editorRef.current.getValue();
+      navigator.clipboard.writeText(code);
+      showSuccessToast('Copied!');
+    }
+  };
+
+  const supportedLanguages = [
+    { id: 'cpp', name: 'C++' },
+    { id: 'java', name: 'Java' },
+    { id: 'python', name: 'Python' },
+    { id: 'javascript', name: 'JavaScript' },
+    { id: 'typescript', name: 'TypeScript' }
+  ];
+
+  const handleLanguageChange = (e) => {
+    const newLanguage = e.target.value;
+    setLanguage(newLanguage);
+    localStorage.setItem('language', newLanguage);
+  };
+
   return (
-    <div className="flex h-screen">
-      <div style={{ width: `${leftPanelWidth}px` }} className="flex-shrink-0 border-r border-gray-200 p-5 overflow-y-auto bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-        <br />
-        <br />
-        <div className="mt-auto pt-4 border-t border-gray-700">
-          <h2 className="text-xl font-bold mb-2 text-blue-300">Project Name: {pName}</h2>
-          <p className="text-sm text-gray-300">Project Description: {pDesc}</p>
+    <div className="project-layout">
+      <div className="left-panel" style={{ width: `${leftPanelWidth}px` }}>
+        <div className="project-info">
+          <h2 className="project-name">Project Name: {pName}</h2>
+          <p className="project-description">Project Description: {pDesc}</p>
         </div>
-        <br />
-        <hr />
-        <br />
+        <hr className="divider" />
         <ClassStructure
           structure={classStructure}
           onAddClass={handleAddClass}
@@ -221,19 +243,34 @@ const ProjectPage = () => {
           onDeleteClass={deleteClass}
           onDeleteOverride={handleDeleteOverride}
         />
+        {/* <CodeStructureViewer classStructure={classStructure} /> */}
       </div>
-      <div
-        className="w-2 cursor-col-resize bg-gray-300 hover:bg-gray-400"
-        onMouseDown={handleMouseDown}
-      />
-      <div className="flex-grow mt-10 pt-10 flex flex-col overflow-hidden relative">
-        <button 
-          onClick={handleSave}
-          className="absolute top-7 right-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
-        >
-          Save
-        </button>
-        <CodeEditor code={generateCode()} language={language} />
+      <div className="resizer" onMouseDown={handleMouseDown} />
+      <div className="right-panel">
+        <div className="editor-controls">
+          <select
+            value={language}
+            onChange={handleLanguageChange}
+            className="language-select"
+          >
+            {supportedLanguages.map(lang => (
+              <option key={lang.id} value={lang.id}>
+                {lang.name}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleCopy} className="copy-button">
+            <FaCopy /> Copy
+          </button>
+          <button onClick={handleSave} className="save-button">
+            Save
+          </button>
+        </div>
+        <CodeEditor
+          code={generateCode()}
+          language={language}
+          editorRef={editorRef}
+        />
       </div>
     </div>
   );

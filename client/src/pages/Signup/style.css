@@ -1,0 +1,19 @@
+.signup-container {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .signup-text {
+    font-size: 0.875rem;
+    color: #4B5563;
+  }
+  
+  .signup-link {
+    font-weight: 500;
+    color: #4F46E5;
+    transition: color 150ms ease-in-out;
+  }
+  
+  .signup-link:hover {
+    color: #4338CA;
+  }

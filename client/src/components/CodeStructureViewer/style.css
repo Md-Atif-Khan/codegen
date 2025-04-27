@@ -1,0 +1,11 @@
+.code-structure-viewer {
+  height: 100%;
+  overflow-y: auto;
+  background-color: #252526;
+  color: #d4d4d4;
+}
+
+.code-structure-viewer svg {
+  width: 16px;
+  height: 16px;
+}

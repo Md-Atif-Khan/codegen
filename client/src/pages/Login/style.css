@@ -1,0 +1,25 @@
+.password-error {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #DC2626;
+  }
+  
+  .login-container {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .login-text {
+    font-size: 0.875rem;
+    color: #4B5563;
+  }
+  
+  .login-link {
+    font-weight: 500;
+    color: #4F46E5;
+    transition: color 150ms ease-in-out;
+  }
+  
+  .login-link:hover {
+    color: #4338CA;
+  }

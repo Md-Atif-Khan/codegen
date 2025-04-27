@@ -1,0 +1,100 @@
+.project-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.left-panel {
+  flex-shrink: 0;
+  border-right: 1px solid #e5e7eb;
+  padding: 1.25rem;
+  overflow-y: auto;
+  background: linear-gradient(to bottom, #111827, #1f2937);
+  color: white;
+}
+
+.resizer {
+  width: 5px;
+  cursor: col-resize;
+  background-color: #d1d5db;
+  transition: background-color 150ms ease-in-out;
+}
+
+.resizer:hover {
+  background-color: #9ca3af;
+}
+
+.right-panel {
+  flex-grow: 1;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.project-info {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #374151;
+}
+
+.project-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #93c5fd;
+}
+
+.project-description {
+  font-size: 0.875rem;
+  color: #d1d5db;
+}
+
+.divider {
+  margin: 1rem 0;
+  border: none;
+  border-top: 1px solid #374151;
+}
+
+.editor-controls {
+  width: 100%;
+  padding-right: 9px;
+  position: absolute;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: end;
+}
+
+.language-select {
+  background-color: #4F46E5;
+  color: white;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+}
+
+.language-select:hover {
+  background-color: #4338CA;
+  transform: scale(1.05);
+}
+
+.save-button, .copy-button {
+  width: fit-content;
+  background-color: #4F46E5;
+  color: white;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  transition: all 300ms ease-in-out;
+}
+
+.save-button:hover, .copy-button:hover {
+  background-color: #4338CA;
+  transform: scale(1.05);
+}

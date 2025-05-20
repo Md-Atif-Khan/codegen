@@ -3,7 +3,7 @@ import { useAuthContext } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { showSuccessToast, showErrorToast } from '../../utils/toaster';
 import { customErrorMessage } from '../../utils/error';
-import '../commonStyles/loginSignup.css';
+import '../CommonStyles/loginSignup.css';
 import './style.css';
 
 const Login = () => {

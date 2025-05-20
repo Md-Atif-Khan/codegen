@@ -1,4 +1,4 @@
-import '../commonStyles/loginSignup.css';
+import '../CommonStyles/loginSignup.css';
 import './style.css';
 
 import React, { useState } from 'react';

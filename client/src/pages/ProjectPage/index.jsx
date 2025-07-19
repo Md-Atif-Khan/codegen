@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import CodeEditor from '../../components/CodeEditor';
 import ClassStructure from '../../components/ClassStructure';
-import CodeStructureViewer from '../../components/CodeStructureViewer';
 import api from '../../services/api';
 import { showSuccessToast } from '../../utils/toaster';
 import { FaCopy } from 'react-icons/fa';
@@ -10,7 +9,7 @@ import './style.css';
 
 const ProjectPage = () => {
   const editorRef = useRef(null);
-  const [leftPanelWidth, setLeftPanelWidth] = useState(300);
+  const [leftPanelWidth, setLeftPanelWidth] = useState(400);
   const { id } = useParams();
   const projectId = location.state?.projectId || id;
 
@@ -246,7 +245,6 @@ const ProjectPage = () => {
           onDeleteClass={deleteClass}
           onDeleteOverride={handleDeleteOverride}
         />
-        {/* <CodeStructureViewer classStructure={classStructure} /> */}
       </div>
       <div className="resizer" onMouseDown={handleMouseDown} />
       <div className="right-panel">
@@ -276,6 +274,41 @@ const ProjectPage = () => {
         />
       </div>
     </div>
+
+    // <div className="flex h-screen">
+    //   <div style={{ width: `${leftPanelWidth}px` }} className="flex-shrink-0 border-r border-gray-200 p-5 overflow-y-auto bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+    //     <br />
+    //     <br />
+    //     <div className="mt-auto pt-4 border-t border-gray-700">
+    //       <h2 className="text-xl font-bold mb-2 text-blue-300">Project Name: {pName}</h2>
+    //       <p className="text-sm text-gray-300">Project Description: {pDesc}</p>
+    //     </div>
+    //     <br />
+    //     <hr />
+    //     <br />
+    //     <ClassStructure
+    //       structure={classStructure}
+    //       onAddClass={handleAddClass}
+    //       onUpdateClass={handleUpdateClass}
+    //       onDeleteClass={deleteClass}
+    //       onDeleteOverride={handleDeleteOverride}
+    //     />
+
+    //   </div>
+    //   <div
+    //     className="w-2 cursor-col-resize bg-gray-300 hover:bg-gray-400"
+    //     onMouseDown={handleMouseDown}
+    //   />
+    //   <div className="flex-grow mt-10 pt-10 flex flex-col overflow-hidden relative">
+    //     <button
+    //       onClick={handleSave}
+    //       className="absolute top-7 right-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
+    //     >
+    //       Save
+    //     </button>
+    //     <CodeEditor code={generateCode()} language={language} />
+    //   </div>
+    // </div>
   );
 };
 

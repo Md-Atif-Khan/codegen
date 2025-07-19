@@ -1,19 +1,75 @@
-.signup-container {
-    margin-top: 1.5rem;
-    text-align: center;
+/* Signup Page Specific Styles */
+
+/* Additional styles specific to signup page */
+.auth-title {
+  background: linear-gradient(135deg, #10b981, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Signup-specific animations */
+.auth-form {
+  animation: slideInRight 0.6s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
   }
-  
-  .signup-text {
-    font-size: 0.875rem;
-    color: #4B5563;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  .signup-link {
-    font-weight: 500;
-    color: #4F46E5;
-    transition: color 150ms ease-in-out;
+}
+
+/* Join theme enhancement */
+.auth-icon {
+  background: linear-gradient(135deg, #10b981, #3b82f6);
+}
+
+/* Enhanced password validation feedback */
+.password-error {
+  animation: shake 0.5s ease-in-out;
+}
+
+.password-success {
+  animation: bounceIn 0.5s ease-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
   }
-  
-  .signup-link:hover {
-    color: #4338CA;
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
   }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Submit button enhancement for signup */
+.submit-button:disabled {
+  background: linear-gradient(135deg, #6b7280, #9ca3af);
+  opacity: 0.7;
+}
+
+/* Responsive adjustments for signup */
+@media (max-width: 768px) {
+  .password-error,
+  .password-success {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+}

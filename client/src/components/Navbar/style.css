@@ -85,7 +85,6 @@
 
 .auth-container {
   display: none;
-  margin-left: 1rem;
 }
 
 @media (min-width: 768px) {

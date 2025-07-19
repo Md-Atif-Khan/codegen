@@ -1,25 +1,37 @@
-.password-error {
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
-    color: #DC2626;
+/* Login Page Specific Styles */
+
+/* Additional styles specific to login page */
+.auth-title {
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Login-specific animations */
+.auth-form {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
   }
-  
-  .login-container {
-    margin-top: 1.5rem;
-    text-align: center;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  .login-text {
-    font-size: 0.875rem;
-    color: #4B5563;
+}
+
+/* Welcome back enhancement */
+.auth-icon {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+}
+
+/* Responsive adjustments for login */
+@media (max-width: 768px) {
+  .auth-subtitle {
+    font-size: 0.95rem;
   }
-  
-  .login-link {
-    font-weight: 500;
-    color: #4F46E5;
-    transition: color 150ms ease-in-out;
-  }
-  
-  .login-link:hover {
-    color: #4338CA;
-  }
+}

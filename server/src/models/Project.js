@@ -5,7 +5,8 @@ const projectSchema = new mongoose.Schema({
   description: { type: String },
   classStructure: { type: Object, required: false },
   code: { type: String, required: false },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  language: {type: String, required: true},
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 });
 
 const Project = mongoose.model('Project', projectSchema);

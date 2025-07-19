@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
 import { validatePassword } from '../../services/validatePassword';
-import { showSuccessToast } from '../../utils/toaster';
+import { showSuccessToast, showErrorToast } from '../../utils/toaster';
 
 const Signup = () => {
   const [username, setUsername] = useState('');

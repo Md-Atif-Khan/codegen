@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
-import { showSuccessToast } from '../../utils/toaster';
+import { showSuccessToast, showErrorToast } from '../../utils/toaster';
 import './style.css';
 
 const CreateProject = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [language, setLanguage] = useState('cpp');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -14,7 +15,7 @@ const CreateProject = () => {
     try {
       var classStructure;
       var code;
-      const response = await api.post('/projects', { name, description, classStructure, code });
+      const response = await api.post('/projects', { name, description, language, classStructure, code });
       showSuccessToast('Project created successfully');
       navigate(`/project/${response.data._id}`, {state: { projectId: response.data._id }});
 
@@ -69,6 +70,22 @@ const CreateProject = () => {
               </div>
             </div>
 
+            <div className="form-group">
+              <label htmlFor="language" className="form-label">
+                Project Default Language
+              </label>
+              <select
+                id="language"
+                name="language"
+                className="form-select"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+              >
+                <option value="cpp">C++</option>
+                <option value="java">Java</option>
+                <option value="python">Python</option>  
+              </select>
+            </div>
             <div className="form-group">
               <button type="submit" className="submit-button">
                 Create Project

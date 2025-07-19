@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import CodeEditor from '../../components/CodeEditor';
 import ClassStructure from '../../components/ClassStructure';
-// import CodeStructureViewer from '../../components/CodeStructureViewer';
+import CodeStructureViewer from '../../components/CodeStructureViewer';
 import api from '../../services/api';
 import { showSuccessToast } from '../../utils/toaster';
 import { FaCopy } from 'react-icons/fa';
@@ -13,6 +13,7 @@ const ProjectPage = () => {
   const [leftPanelWidth, setLeftPanelWidth] = useState(300);
   const { id } = useParams();
   const projectId = location.state?.projectId || id;
+
   const [classStructure, setClassStructure] = useState(() => {
     const savedStructure = localStorage.getItem('classStructure');
     return savedStructure ? JSON.parse(savedStructure) : [];
@@ -30,14 +31,13 @@ const ProjectPage = () => {
     const fetchProject = async () => {
       try {
         const response = await api.get(`/projects/${projectId}`);
-        const { name: fetchedName, description: fetchedDesc, classStructure: fetchedStructure, code: fetchedCode } = response.data;
+        const { name: fetchedName, description: fetchedDesc, classStructure: fetchedStructure, code: fetchedCode, language: fetchedLanguage } = response.data;
         setpName(fetchedName);
         setpDesc(fetchedDesc);
+        setLanguage(fetchedLanguage || 'cpp');
         setClassStructure(fetchedStructure || []);
         localStorage.setItem('classStructure', JSON.stringify(fetchedStructure || []));
-
-        setLanguage(fetchedCode ? 'cpp' : 'cpp');
-        localStorage.setItem('language', fetchedCode ? 'cpp' : 'cpp');
+        localStorage.setItem('language', language);
       } catch (error) {
         console.error('Error fetching project:', error);
       }
@@ -189,6 +189,7 @@ const ProjectPage = () => {
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      localStorage.clear();
     };
   }, []);
 
@@ -197,8 +198,10 @@ const ProjectPage = () => {
       await api.put(`/projects/${projectId}`, {
         classStructure,
         code: generateCode(),
+        language: language
       });
-      localStorage.clear();
+      localStorage.setItem('classStructure', JSON.stringify(classStructure));
+      localStorage.setItem('language', language);
       showSuccessToast('Project saved successfully!');
     } catch (error) {
       console.error('Error saving project:', error);

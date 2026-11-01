@@ -16,7 +16,7 @@ Server (`server/`, Express + Mongoose):
 - `npm run dev` — nodemon
 - `npm start` — `node server.js`
 
-No test framework is configured in either package.
+Server test (`server/`): `npm test` runs `test/project-isolation.test.js`, which boots the real app against a MongoDB at `TEST_MONGODB_URI` (default `mongodb://127.0.0.1:27017/codegen-test`, database is dropped first) and checks that projects are scoped to their owner. No test framework, plain `node:assert`. The client has no tests.
 
 ## Environment
 

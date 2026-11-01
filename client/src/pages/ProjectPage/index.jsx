@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import CodeEditor from '../../components/CodeEditor';
 import ClassStructure from '../../components/ClassStructure';
 import api from '../../services/api';
-import { showSuccessToast } from '../../utils/toaster';
-import { FaCopy } from 'react-icons/fa';
+import { showSuccessToast, showErrorToast } from '../../utils/toaster';
+import { FaCopy, FaDownload } from 'react-icons/fa';
 import './style.css';
 
 const ProjectPage = () => {
@@ -204,7 +204,7 @@ const ProjectPage = () => {
       showSuccessToast('Project saved successfully!');
     } catch (error) {
       console.error('Error saving project:', error);
-      alert('Failed to save project. Please try again.');
+      showErrorToast('Failed to save project. Please try again.');
     }
   };
 
@@ -217,12 +217,32 @@ const ProjectPage = () => {
   };
 
   const supportedLanguages = [
-    { id: 'cpp', name: 'C++' },
-    { id: 'java', name: 'Java' },
-    { id: 'python', name: 'Python' },
-    { id: 'javascript', name: 'JavaScript' },
-    { id: 'typescript', name: 'TypeScript' }
+    { id: 'cpp', name: 'C++', extension: 'cpp' },
+    { id: 'java', name: 'Java', extension: 'java' },
+    { id: 'python', name: 'Python', extension: 'py' },
+    { id: 'javascript', name: 'JavaScript', extension: 'js' },
+    { id: 'typescript', name: 'TypeScript', extension: 'ts' }
   ];
+
+  const handleDownload = () => {
+    const code = editorRef.current ? editorRef.current.getValue() : generateCode();
+    if (!code.trim()) {
+      showErrorToast('Nothing to download yet. Add a class first.');
+      return;
+    }
+    const extension = supportedLanguages.find(l => l.id === language)?.extension || 'txt';
+    const safeName = (pName || 'project').trim().replace(/[^a-z0-9_-]+/gi, '_') || 'project';
+    const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${safeName}.${extension}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showSuccessToast(`Downloaded ${link.download}`);
+  };
 
   const handleLanguageChange = (e) => {
     const newLanguage = e.target.value;
@@ -262,6 +282,9 @@ const ProjectPage = () => {
           </select>
           <button onClick={handleCopy} className="copy-button">
             <FaCopy /> Copy
+          </button>
+          <button onClick={handleDownload} className="download-button">
+            <FaDownload /> Download
           </button>
           <button onClick={handleSave} className="save-button">
             Save

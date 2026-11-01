@@ -3,7 +3,7 @@ import { NotFoundError, UnauthorizedError } from '../utils/errors.js';
 import User from '../models/User.js';
 
 export const getProjects = async (userId) => {
-  return await Project.find({ user: userId });
+  return await Project.find({ userId });
 };
 
 export const createProject = async (userId, projectData) => {
@@ -22,7 +22,7 @@ export const createProject = async (userId, projectData) => {
 };
 
 export const getProject = async (projectId, userId) => {
-  const project = await Project.findOne({ _id: projectId, user: userId });
+  const project = await Project.findOne({ _id: projectId, userId });
   if (!project) {
     throw new NotFoundError('Project not found');
   }
@@ -31,7 +31,7 @@ export const getProject = async (projectId, userId) => {
 
 export const updateProject = async (projectId, userId, projectData) => {
   const project = await Project.findOneAndUpdate(
-    { _id: projectId, user: userId },
+    { _id: projectId, userId },
     { $set: projectData },
     { new: true, runValidators: true }
   );
@@ -41,7 +41,7 @@ export const updateProject = async (projectId, userId, projectData) => {
   return project;
 };
 export const deleteProject = async (projectId, userId) => {
-  const project = await Project.findOneAndDelete({ _id: projectId, user: userId });
+  const project = await Project.findOneAndDelete({ _id: projectId, userId });
   if (!project) {
     throw new NotFoundError('Project not found');
   }

@@ -4,7 +4,6 @@ import { UnauthorizedError } from '../utils/errors.js';
 const authMiddleware = (req, res, next) => {
   try {
     const token = req.cookies?.token;
-    console.log(token);
     if (!token) {
       throw new UnauthorizedError('Authentication required');
     }
@@ -13,7 +12,7 @@ const authMiddleware = (req, res, next) => {
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
-      next(new UnauthorizedError('Invalid token'));
+      return next(new UnauthorizedError('Invalid token'));
     }
     next(error);
   }

@@ -26,11 +26,14 @@ Client `.env` (baked in at Vite build time, so a redeploy is needed after changi
 Server `.env`:
 - `PORT` (defaults to 5000), `MONGODB_URI`, `JWT_SECRET`, `CLIENT_URL` (CORS origin, e.g. `http://localhost:5173`), `API_KEY` (Google Generative AI), `COOKIE_DOMAIN` (production only).
 
-## Deployment
+## Deployment and branches
 
+- **`main` is the deployed branch.** Both Vercel (client) and Render (server) build from `main`. A push to `master` only produces a Vercel *Preview* deployment; it is not live until it reaches `main`.
+- Workflow: commit on `master`, then merge `master` into `main` and push both. Keep the two branches identical.
+- Commit messages are a single plain line with no attribution trailer.
 - Client is deployed to Vercel; server is deployed to Render with the `server/` folder as the root directory (`render.yaml` is at the repo root but the live service runs from `server/`).
 - Render's working directory is `server/`, so `path.resolve()` in `server.js` is `server/`, not the repo root.
-- `main` and `master` branches both exist on origin; `main` is the default and they have historically been kept identical.
+- Vite bakes `VITE_API_URL` in at build time; changing the Vercel env var requires a redeploy.
 
 ## Architecture
 
